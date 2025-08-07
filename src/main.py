@@ -109,7 +109,7 @@ def parse_dtc_response(data):
     return f"DTCs found: {dtcs}"
 
 def read_dtcs():
-    """Read Diagnostic Trouble Codes (Service 0x19)"""
+    """Implements UDS Service 0x19: ReadDTCInformation"""
     print("Reading Diagnostic Trouble Codes...")
     # Sub-function 0x02: reportDTCByStatusMask
     # Status mask 0xFF: all DTCs
@@ -135,7 +135,7 @@ def read_dtcs():
         return False
 
 def security_access(level=1):
-    """Request security access (simplified example)"""
+    """Implements UDS Service 0x27: SecurityAccess (seed request only)"""
     print(f"Requesting security access level {level}...")
     # Request seed (odd levels request seed, even levels send key)
     req = build_uds_request(0x27, [level])
@@ -161,7 +161,7 @@ def security_access(level=1):
         return False
 
 def clear_dtcs():
-    """Clear Diagnostic Trouble Codes (Service 0x14)"""
+    """Implements UDS Service 0x14: ClearDiagnosticInformation"""
     print("Clearing Diagnostic Trouble Codes...")
     req = build_uds_request(0x14, [0xFF, 0xFF, 0xFF])  # Clear all DTCs
     can.send(req, 0x7DF)
@@ -183,7 +183,7 @@ def clear_dtcs():
         return False
 
 def read_vin():
-    """Read Vehicle Identification Number (Service 0x22, DID 0xF190)"""
+    """Implements UDS Service 0x22: ReadDataByIdentifier (VIN)"""
     print("Reading Vehicle Identification Number...")
     req = build_uds_request(0x22, [0xF1, 0x90])  # VIN DID
     can.send(req, 0x7DF)
